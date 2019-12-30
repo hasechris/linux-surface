@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Surface Feature Matrix</title>
+
+<style>
+.green, .red, .orange, .yellow {
+  font-size: .875em;
+}
+.green { background-color: palegreen }
+.red { background-color: red }
+.orange { background-color: orange }
+.yellow { background-color: yellow }
+
+/* ikiwiki style sheet */
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section {
+	display: block;
+}
+
+/*
+  fd.o ikiwiki theme
+  derived from a theme by Danny Castonguay
+*/
+
+.title {
+  color: #2b5e82;
+  font-weight: bold;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #2b5e82;
+}
+
+.header {
+  font-size: 200%;
+}
+
+h1 {
+  font-size: 160%;
+/*  border-top: 5px solid #2b5e82;  */
+}
+
+h2 {
+  font-size: 130%;
+/*  border-top: 2px solid #2b5e82;  */
+}
+
+h3, h4, h5, h6 {
+  font-size: 110%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+/*  font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif"; */
+  *font-size: small;
+  color: black;
+  background: white;
+  font-size: 1.01em;
+}
+
+a:link {
+  color: #2b5e82;
+}
+
+a:visited {
+  color: #52188b;
+}
+
+a:hover {
+  color: blue;
+}
+
+hr {
+  border-style: none;
+  background-color: #2b5e82;
+  height: 1px;
+}
+
+code, pre {
+  background-color: white;
+  color: #2e1a05;
+}
+
+pre {
+  padding: .5em;
+  margin: 1em;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #2b5e82;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -moz-box-shadow: 0px 0px 2px #1a1a1a;
+  -webkit-box-shadow: 0px 0px 2px #1a1a1a;
+  box-shadow: 0px 0px 2px #1a1a1a;
+}
+
+#content, #comments, #footer {
+  margin: 1em 2em;
+}
+
+#pageinfo {
+  border-color: gray;
+}
+
+label[for="editmessage"] {
+  margin-top: 1em;
+}
+
+#editmessage {
+  margin-bottom: 1em;
+}
+
+span.pagelinks {
+  width: inherit !important;
+}
+
+span.pagelinks a, span.tags a {
+  margin: 0.2em;
+  padding: 0.2em;
+  font-size: 1.01em;
+  background: #e6e6e6;
+  color: black;
+  border-style: solid;
+  border-width: 2px;
+  border-color: gray;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+
+span.pagelinks a:hover, span.tags a:hover {
+  background: #cccccc;
+  color: black;
+}
+
+span.desc br {
+  display: none !important;
+}
+
+div.titleandtags {
+  border-style: solid;
+  border-width: 2px;
+  border-color: gray;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #f2f2f2;
+  margin-top: 1.5em;
+  padding: .8em;
+}
+
+div.titleandtags h3, div.titleandtags span.tags {
+  padding: 0;
+}
+
+div.titleandtags h3 {
+  margin: 0 0 .5em 0;
+}
+
+div.titleandtags span.tags {
+  line-height: 2em;
+}
+
+div.titleandtags div.lastmodified {
+  float: right;
+}
+
+thead th {
+  color: white;
+  background-color: gray;
+  padding: .5em;
+}
+
+td {
+  padding: .2em .4em;
+}
+
+tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #d9d9d9;
+}
+
+table {
+
+  border-collapse: collapse;
+}
+/* table.ColorTable: See Nouveau's FeatureMatrix for example usage */
+
+table.ColorTable td {
+  margin: 0em;
+  padding: 0em;
+  border: 1px solid rgb(153, 153, 153);
+  text-align: center;
+}
+table.ColorTable td {
+  padding: .75rem .5em;
+}
+
+/* Don't know what these last two do but leaving those there just in case */
+.pagecloud {
+  width: auto;
+  border-color: red;
+}
+
+.sidebar {
+  width: 28ex;
+  border-bottom: 0;
+  border-right: 0;
+  border-top: 0;
+  margin-top: 0.5em;
+  padding: 0 0 0 2ex;
+  border-color: red;
+}
+</style>
+
+
+</head>
+<body>
+
+
+<div id="content">
+
+  <h2 id="title"><a name="index1h2"></a>Feature Matrix for Surface Linux Support</h2>
+
+<ul>
+<li>"<strong>DONE</strong>" means that it is implemented and relatively bug-free.</li>
+<li>"<strong>MOSTLY</strong>" means that it is implemented but has some known bugs.</li>
+<li>"<strong>WIP</strong>" means that someone has started on the initial implementation.</li>
+<li>"<strong>N/A</strong>" means that the feature is not supported by the hardware.</li>
+<li>"<strong>N/N</strong>" means that the feature will not be implemented, because a better alternative is or will be available.</li>
+<li>"<strong>TODO</strong>" means that someone needs to write the code. The required knowledge to write the code may or may not be known. Please ask on #radeon if you want to get your feet wet on this.</li>
+<li>"<strong>UNKNOWN</strong>" means that the current status of this item isn't known. You are free to update it if you know.</li>
+</ul>
+
+<table class="ColorTable">
+        <tr>
+            <td colspan="2"><strong>Hardware</strong> </td>
+                        <td><strong>Surface Book</strong>  </td>
+            <td><strong>Surface Book 2</strong>  </td>
+            <td><strong>Surface Go</strong>  </td>
+            <td><strong>Surface Laptop</strong>  </td>
+            <td><strong>Surface Laptop 2</strong>  </td>
+            <td><strong>Surface Laptop 3 (Intel)</strong>  </td>
+            <td><strong>Surface Pro 3</strong>  </td>
+            <td><strong>Surface Pro 4</td>
+            <td><strong>Surface Pro 2017</strong> </td>
+            <td><strong>Surface Pro 6</strong>  </td>
+            <td><strong>Surface Pro 7</strong>  </td>
+        </tr>
+        <tr>
+            <td colspan="2">Keyboard</td>
+                        <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green">surface_sam</td>
+            <td class="green">surface_sam</td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Touchpad<a href="#note_2"><sup>2</sup></a> </td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green">surface_sam</td>
+            <td class="green">surface_sam</td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+        </tr>
+        <tr>
+            <td colspan="2">2D/3D Acceleration</td>
+                        <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green">i915</td>
+            <td class="green">i915</td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Touchscreen</td>
+                        <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="red"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Pen</td>
+                        <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="red"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+        </tr>
+        <tr>
+            <td colspan="2">WiFi</td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green">iwlwifi</td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Bluetooth</td>
+                        <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green">iwlwifi</td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Speakers</td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green">snd_hda_intel</td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Power / Volume Buttons</td>
+                        <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green">soc_button_array<a href="#note_1"><sup>1</sup></a> </td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+        </tr>
+        <tr>
+            <td colspan="2">SD Card Reader</td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Suspend / S2idle (S0ix) / Hibernate</td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"> <a href="#note_35"><sup>35</sup></a></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Sensors  (accelerometer, gyroscope, ambient light)</td>
+                        <td>N/A  </td>
+            <td>N/A  </td>
+            <td>N/A  </td>
+            <td>N/A  </td>
+            <td class="yellow">MOSTLY</td>
+            <td class="yellow">MOSTLY</td>
+            <td class="yellow">MOSTLY</td>
+            <td class="yellow">MOSTLY</td>
+            <td class="yellow">MOSTLY</td>
+            <td class="yellow">MOSTLY</td>
+            <td class="yellow">MOSTLY</td>
+        </tr>
+        <tr>
+            <td colspan="2">Battery Status</td>
+                        <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green">surface_sam</td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Performance Modes</td>
+                        <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="yellow">UNKNOWN</td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Docking/Undocking Keyboard</td>
+                        <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+            <td class="green"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Dedicated GPU</td>
+                        <td class="green"></td>
+            <td class="green"></td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td colspan="2">Camera</td>
+            <td class="red"></td>
+            <td class="red"></td>
+            <td class="red"></td>
+            <td class="red"></td>
+            <td class="red"></td>
+            <td class="green">uvcvideo</td>
+            <td class="red"></td>
+            <td class="red"></td>
+            <td class="red"></td>
+            <td class="red"></td>
+            <td class="red"></td>
+        </tr>
+</table>
+
+<p><sup id="note_1">1</sup> Kernel 5.4 required<br />
+</p>
+
+<h2 id="documentation"><a name="index13h2"></a>Documentation</h2>
+
+<ul>
+  <!-- <li><a href="./R600_pres_carli2.pdf"></a></li> -->
+</ul>
+
+</body>
+</html>
