@@ -43,7 +43,7 @@ Follow the instructions below to install the latest kernel and config files.
 
 ### What's NOT Working
 
-* Cameras (not fully supported yet)
+* Cameras (not fully supported yet, working on Surface Laptop 3)
 * Dedicated Nvidia GPU (Surface Book 1 with Performance Base)
 * Connected Standby is not supported yet
 
@@ -110,7 +110,6 @@ If you want to compile the kernel yourself (e.g. if your distribution is not sup
 
 * If you are getting stuck at boot when loading the ramdisk, you need to install the Processor Microcode Firmware for Intel CPUs (usually found under Additional Drivers in Software and Updates).
 * Do not install TLP! It can cause slowdowns, laggy performance, and occasional hangs! You have been warned.
-* If you chose to use hibernate over suspend, please follow the instructions [here][hibernate-setup].
 
 ### Support
 
@@ -128,5 +127,6 @@ For development related questions and discussions, please consider joining our I
 
 [gitter]: https://gitter.im/linux-surface
 [hibernate-setup]: https://github.com/linux-surface/linux-surface/wiki/Secure-Boot
+[releases]: https://github.com/linux-surface/linux-surface/releases
 
 [linux-surface-kernel]: https://github.com/linux-surface/kernel/
